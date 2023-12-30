@@ -4,7 +4,7 @@ import { useContext, useState } from "react";
 import AdoptedPetContext from "../context/AdoptedPetContext";
 import Modal from "./Modal";
 import ErrorBoundary from "./ErrorBoundary";
-import fetchPet from "../fetchPet";
+import fetchPet from "../api/fetchPet";
 import Carousel from "./Carousel";
 
 const Details = () => {

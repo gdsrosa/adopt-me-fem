@@ -1,12 +1,13 @@
-import { QueryStatus, useQuery } from "@tanstack/react-query";
-import fetchBreedList from "../api/fetchBreedList";
-import { Animal } from "../common/types/ApiResponses";
+import { Animal } from "../common/types/SearchParams";
+import { useGetBreedsQuery } from "../api/services/petApi";
+import { QueryStatus } from "@reduxjs/toolkit/dist/query";
 
-export default function useBreedList(animal: Animal) {
-  const results = useQuery(["breeds", animal], fetchBreedList);
+export default function useBreedList(animal: Animal): [string[], QueryStatus] {
+  const { data: breeds, status } = useGetBreedsQuery(animal, {
+    skip: !animal,
+  });
 
-  return [results?.data?.breeds ?? [], results.status] as [
-    string[],
-    QueryStatus
-  ];
+  if (!animal) return [[], status];
+
+  return [breeds ?? [], status];
 }

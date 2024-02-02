@@ -1,4 +1,4 @@
-export type Animal = "dog" | "cat" | "bird" | "reptile" | "rabbit";
+import { Animal } from "./SearchParams";
 
 export interface Pet {
   id: number;

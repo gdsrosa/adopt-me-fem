@@ -1,12 +1,11 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import { useContext, useState } from "react";
-import AdoptedPetContext from "../context/AdoptedPetContext";
-import Modal from "./Modal";
-import ErrorBoundary from "./ErrorBoundary";
-import fetchPet from "../api/fetchPet";
-import Carousel from "./Carousel";
-import { PetAPIResponse } from "../common/types/ApiResponses";
+import { useState } from "react";
+import { useAppDispatch } from "../app/store/hooks";
+import { useGetPetQuery } from "../api/services/petApi";
+import { adopt } from "../features/adoptedPet/adoptedPetSlice";
+import Modal from "../components/Modal";
+import ErrorBoundary from "../components/ErrorBoundary";
+import Carousel from "../components/Carousel";
 
 const Details = () => {
   const { id } = useParams();
@@ -15,19 +14,16 @@ const Details = () => {
 
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
-  const results = useQuery(["details", id], fetchPet);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [_, setAdoptedPet] = useContext(AdoptedPetContext);
+  const { isLoading, data: pet } = useGetPetQuery(id);
+  const dispatch = useAppDispatch();
 
-  if (results.isLoading) {
+  if (isLoading) {
     return (
       <div className="loading-pane">
         <h2 className="loader">🌀</h2>
       </div>
     );
   }
-
-  const pet = (results?.data as PetAPIResponse)?.pets[0];
 
   if (!pet) throw new Error("No pet returned.");
 
@@ -46,7 +42,7 @@ const Details = () => {
               <div className="buttons">
                 <button
                   onClick={() => {
-                    setAdoptedPet(pet);
+                    dispatch(adopt(pet));
                     navigate("/");
                   }}
                 >

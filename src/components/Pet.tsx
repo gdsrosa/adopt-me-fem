@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Animal } from "../common/types/ApiResponses";
+import { Animal } from "../common/types/SearchParams";
 
 interface PetProps {
   id: number;
@@ -14,14 +14,15 @@ const Pet = (props: PetProps) => {
   const { name, animal, breed, images, location, id } = props;
 
   let hero = "http://pets-images.dev-apis.com/pets/none.jpg";
-  if (images.length) {
+
+  if (images?.length) {
     hero = images[0];
   }
 
   return (
     <Link to={`/details/${id}`} className="pet">
       <div className="image-container">
-        <img src={hero} alt={name} />
+        <img data-testid="thumbnail" src={hero} alt={name} />
       </div>
       <div className="info">
         <h1>{name}</h1>

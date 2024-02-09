@@ -1,5 +1,6 @@
 import { QueryFunction } from "@tanstack/react-query";
-import { Animal, PetAPIResponse } from "../common/types/ApiResponses";
+import { PetAPIResponse } from "../common/types/ApiResponses";
+import { Animal } from "../common/types/SearchParams";
 
 interface SearchProps {
   location: string;
